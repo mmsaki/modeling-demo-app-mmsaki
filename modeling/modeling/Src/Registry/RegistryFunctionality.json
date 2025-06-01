@@ -1,0 +1,15 @@
+{
+"functionName": "Registry functionality",
+"path": "src/registry.ts",
+"spec": {
+"pre": "addUserPre s user",
+"post": "addUserPost s s' user",
+"invariant": "userRegistryInvariant s"
+},
+"leanDefs": "structure User where\n  id : Nat\n  name : String\n\nstructure RegistryState where\n  users : Map Nat User\n\n-- Preconditions for adding a user\ndef addUserPre (s : RegistryState) (user : User) : Prop :=\n  ¬ s.users.contains user.id\n\n-- Postconditions after adding a user\ndef addUserPost (s s' : RegistryState) (user : User) : Prop :=\n  s'.users.contains user.id ∧\n  s'.users.size = s.users.size + 1 ∧\n  ∀ (id : Nat), id ≠ user.id → s'.users.contains id = s.users.contains id\n\n-- Invariant for the users map\ndef userRegistryInvariant (s : RegistryState) : Prop :=\n  ∀ id1 id2, s.users.contains id1 ∧ s.users.contains id2 ∧ id1 ≠ id2 → true \n\n-- Placeholder for theorems that may establish behavior\ntheorem addUserPreservesInvariant\n  (s s' : RegistryState) (user : User)\n  (hPre : addUserPre s user)\n  (hPost : addUserPost s s' user)\n  (hInv : userRegistryInvariant s)\n  : userRegistryInvariant s' := by\n  sorry",
+"unprovenTheorems": [
+"addUserPreservesInvariant"
+],
+"sourceHash": "https://github.com/yourusername/yourrepo/pull/1/commits/yourcommit",
+"PR": "https://github.com/yourusername/yourrepo/pull/1"
+}
